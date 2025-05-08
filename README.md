@@ -51,7 +51,7 @@ The system provides:
    - Deploy on Streamlit Cloud or Azure App Service for internal use
 
 ---
-
+<pre><code>
 Lakehouse/
 │
 ├── Files/ # Uploaded raw files
@@ -61,6 +61,9 @@ Lakehouse/
 │
 └── Tables/
 └── metadata_catalog # Delta Table with metadata for each file
+</code></pre>
+  
+<pre><code>Lakehouse/ │ ├── Files/ # Uploaded raw files │ └── project_name/ │ └── yyyy-mm-dd/ │ └── my_dataset.csv │ └── Tables/ └── metadata_catalog # Delta Table with metadata for each file </code></pre>
 
 ## Metadata Protocol (V1)
 
