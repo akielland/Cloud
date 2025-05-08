@@ -1,3 +1,9 @@
+# Ignore uploaded files and local metadata
+data/
+metadata.csv
+
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
