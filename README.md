@@ -1,16 +1,10 @@
-# Cloud
+# Cloud 1 – Data Upload Portal Pilot
 
-
-
-# 🌐 Cloud – Data Upload Portal Pilot
-
-This is a pilot project for creating a simple internal **web-based data upload portal** for the Institute of Transport Economics. The goal is to allow users to upload datasets via a browser interface, fill in metadata through a short form, and automatically store both the file and metadata for later retrieval and analysis.
-
-This project also serves as a personal learning platform for building data infrastructure with modern tools.
+This is a pilot project for creating a simple internal **web-based data upload portal** for uploading data to the cloud. The goal is to allow users to upload datasets via a browser interface, fill in metadata through a short form, and automatically store both the file and metadata for later retrieval and analysis.
 
 ---
 
-## 🚀 Project Description
+## Project Description
 
 The system provides:
 
@@ -23,18 +17,14 @@ The system provides:
 
 ---
 
-## 🧩 Tools and Stack (Phase 1)
+##  Tools and Stack (Phase 1)
 
 | Purpose              | Tool / Service             |
 |----------------------|----------------------------|
 | Web frontend         | Streamlit (Python)         |
-| IDE                  | Visual Studio Code (VSC)   |
 | File storage         | Azure Blob Storage         |
 | Metadata storage     | Local CSV → Delta Table (Fabric) |
-| Version control      | Git + GitHub               |
-| Experimentation      | Jupyter Notebooks          |
 | Backend logic        | Python modules             |
-| AI assistant         | ChatGPT (code co-pilot)    |
 
 ---
 
@@ -47,7 +37,6 @@ The system provides:
 
 2. **Structure code as a maintainable project**:
    - Use modular Python code for backend logic
-   - Use GitHub for version control
 
 3. **Test and demo the system**:
    - Share local app with test users
@@ -60,6 +49,6 @@ The system provides:
 
 ---
 
-## 📁 Project Structure (Planned)
+##  Project Structure (Planned)
 
 
