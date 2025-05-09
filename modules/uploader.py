@@ -5,8 +5,21 @@ from datetime import date
 
 # Root folder to save files
 DATA_ROOT = Path("data")
-METADATA_FILE = Path("metadata.csv")
+METADATA_FILE = DATA_ROOT / "metadata.csv"
 
+# Check if the data directory exists, if not create it
+if not DATA_ROOT.exists():
+    DATA_ROOT.mkdir(parents=True, exist_ok=True)
+
+# Ensure the metadata file exists
+if not METADATA_FILE.exists():
+    # Create an empty metadata file with headers
+    pd.DataFrame(columns=["file_name", "project_name", "uploader_name", "upload_date", "file_path", "comments", "file_format"]).to_csv(METADATA_FILE, index=False)
+
+
+
+
+# Function to save file and metadata    
 
 def save_file_and_metadata(file, project_name, uploader_name, comments):
     # Step 1: Prepare folder path
