@@ -22,6 +22,8 @@ if not METADATA_FILE.exists():
           "upload_date", "file_path", "comments", "file_format"
           ]).to_csv(METADATA_FILE, index=False)
 
+# check if the metadata file is made
+print("Metadata file created:", METADATA_FILE.exists())
 
 
 def save_uploaded_file(file, project_name):    
