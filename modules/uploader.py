@@ -2,6 +2,7 @@
 # --- modules/uploader.py ---
 # This module handles file uploads and metadata management for a cloud data upload portal.
 import uuid
+import json
 from pathlib import Path
 from datetime import date
 import pandas as pd
@@ -18,29 +19,33 @@ if not DATA_ROOT.exists():
 if not METADATA_FILE.exists():
     # Create an empty metadata file with headers
     pd.DataFrame(columns=[
-        "file_name", "project_name", "uploader_name",
-          "upload_date", "file_path", "comments", "file_format"
-          ]).to_csv(METADATA_FILE, index=False)
+        "file_id", "file_name", "project_name", "uploader_name",
+        "upload_date", "file_path", "comments", "file_format"
+    ]).to_csv(METADATA_FILE, index=False)
 
 # check if the metadata file is made
 print("Metadata file created:", METADATA_FILE.exists())
 
 
-def save_uploaded_file(file, project_name):    
-    # Step 1: Prepare folder path
-    today = date.today().isoformat()  # e.g. "2025-05-08"
+
+# Function to save the uploaded file
+# and create a folder structure based on the project name and date
+def save_uploaded_file(file, project_name):
+    # first: make data storage folder if it doesn't exist
+    today = date.today().isoformat() # "2025-05-08"
     folder_path = DATA_ROOT / project_name / today
-    # Create the folder if it doesn't exist
+     # Create the folder if it doesn't exist
     folder_path.mkdir(parents=True, exist_ok=True)
-
-    # Step 2: Save uploaded file
+    print("Folder created:", folder_path.exists())
+    print("Folder contains:", list(folder_path.iterdir()))
+    print("File name:", file.name)
+    
+    # save uploaded file
     file_path = folder_path / file.name
+    # TODO: Check if the file already exists
     with open(file_path, "wb") as f:
-        f.write(file.getbuffer()) # Save the file to the specified path
-    # Check if the file already exists
-
+        f.write(file.getbuffer())  # Save the file to the specified path
     return file_path
-
 
 
 
@@ -58,22 +63,25 @@ def create_metadata_dict(file, project_name, uploader_name, comments, file_path)
         "file_format": Path(file.name).suffix.lstrip("."),
     }
 
+
+
 # Append metadata to local CSV
 def append_metadata_row(metadata):
     df = pd.DataFrame([metadata])
     df.to_csv(METADATA_FILE, mode="a", header=False, index=False)
 
 
+def save_metadata_json(metadata, file_path):
+    # Save metadata as JSON
+    metadata_path = file_path.with_suffix(file_path.suffix + ".metadata.json")
+    with open(metadata_path, "w") as f:
+        json.dump(metadata, f, indent=4)
+    print("Metadata saved to:", metadata_path)
+
 # Save file and metadata
 def save_file_and_metadata(file, project_name, uploader_name, comments):
-    # Save the uploaded file
     file_path = save_uploaded_file(file, project_name)
-
-    # Create metadata dictionary
     metadata = create_metadata_dict(file, project_name, uploader_name, comments, file_path)
-
-    # Append metadata to CSV
     append_metadata_row(metadata)
-
-    return file_path, metadata["file_id"]
-
+    save_metadata_json(metadata, file_path)
+    return file_path, metadata

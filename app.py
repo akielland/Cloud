@@ -8,6 +8,7 @@ from modules.metadata_viewer import load_metadata, filter_metadata
 st.set_page_config(page_title="Cloud Upload Portal", layout="wide")
 st.title("Cloud Data Upload Portal")
 
+# TODO: 
 # Sidebar for metadata filtering -> to be done later
 # st.sidebar.header("Metadata Filter")
 # metadata_df = load_metadata()
@@ -23,7 +24,9 @@ if st.button("Submit"):
     if uploaded_file and project and uploader:
         file_path, metadata = save_file_and_metadata(uploaded_file, project, uploader, comments)
         st.success(f"File saved to {file_path}")
-        st.json(metadata) # Display metadata
+        # st.json(metadata) # Display metadata
+        # st.experimental_rerun
+        st.rerun()
     else:
         st.warning("Please complete all required fields.")
 
@@ -31,6 +34,8 @@ if st.button("Submit"):
 st.divider()
 st.header("2. View Metadata")
 df = load_metadata()
+
+# Display metadata in a table
 if not df.empty:
     col1, col2 = st.columns(2)
     with col1:
@@ -43,6 +48,10 @@ if not df.empty:
     if uploader_filter != "All":
         df = filter_metadata(df, "uploader_name", uploader_filter)
 
-    st.dataframe(df, use_container_width=True)
+    for _, row in df.iterrows():
+        with st.expander(f"{row['file_name']} (uploaded by {row['uploader_name']})"):
+            st.write(row.to_dict())
+            with open(row["file_path"], "rb") as f:
+                st.download_button("Download file", f, file_name=row["file_name"])
 else:
     st.info("No metadata found yet. Upload a file first.")
